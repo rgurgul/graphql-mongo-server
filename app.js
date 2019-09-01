@@ -1,1 +1,1 @@
-import "./build/index";
+require('./build');
