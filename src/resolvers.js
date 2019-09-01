@@ -3,7 +3,9 @@ import { Cat } from "./models/Cat";
 export const resolvers = {
   Query: {
     hello: () => "hi",
-    cats: () => Cat.find()
+    fetch: () => Cat.find(),
+    getById: (_, { id }) => Cat.findById(id),
+    getByName: (_, { name }) => Cat.findOne({ name: new RegExp(name, "i") })
   },
   Mutation: {
     createCat: async (_, { name }) => {
