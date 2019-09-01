@@ -16,7 +16,9 @@ const startServer = async () => {
 
   server.applyMiddleware({ app });
 
-  await mongoose.connect("mongodb://localhost:27017/gql", {
+  const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/course';
+
+  await mongoose.connect(dbUrl, {
     useNewUrlParser: true
   });
 
