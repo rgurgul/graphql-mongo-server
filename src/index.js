@@ -13,7 +13,7 @@ const startServer = async () => {
     typeDefs,
     resolvers,
     introspection: true,
-    playground: true, function
+    playground: true
   });
 
   server.applyMiddleware({ app });

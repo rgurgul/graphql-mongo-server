@@ -1,4 +1,4 @@
-export function access(req, res, next) {
+export const access = (req, res, next) => {
     if (req.headers.origin) {
         res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
     }
