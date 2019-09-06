@@ -1,9 +1,11 @@
-import { ApolloServer, gql } from "apollo-server-express";
+import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import mongoose from "mongoose";
 import { resolvers } from "./resolvers";
 import { typeDefs } from "./typeDefs";
 import { access } from "./access";
+const http = require('http');
+
 
 const startServer = async () => {
   const app = express();
@@ -13,20 +15,33 @@ const startServer = async () => {
     typeDefs,
     resolvers,
     introspection: true,
-    playground: true
+    playground: true,
+    subscriptions: {
+      onConnect: (connectionParams, webSocket) => {
+        console.log('connnnnnnnnnn');
+
+
+//        throw new Error('Missing auth token!');
+      },
+    }
   });
 
-  server.applyMiddleware({ app });
+  server.applyMiddleware({ app })
+
+  const httpServer = http.createServer(app);
+  server.installSubscriptionHandlers(httpServer);
+
 
   const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/course';
 
   await mongoose.connect(dbUrl, {
     useNewUrlParser: true
   });
-
-  app.listen({ port: 4000 }, () =>
-    console.log(`Server ready at http://localhost:4000${server.graphqlPath}`)
-  );
+  const PORT=4000;
+  httpServer.listen(PORT, () => {
+    console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`)
+    console.log(`🚀 Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}`)
+  })
 };
 
 startServer();

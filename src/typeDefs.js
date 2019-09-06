@@ -17,4 +17,8 @@ export const typeDefs = gql`
     createCat(name: String!): Cat!,
     removeCatById(id: String!): Cat!
   }
+
+  type Subscription {
+    postAdded: Cat
+  }
 `;
