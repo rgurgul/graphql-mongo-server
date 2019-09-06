@@ -12,6 +12,10 @@ export const resolvers = {
       const kitty = new Cat({ name });
       await kitty.save();
       return kitty;
+    },
+    removeCatById: async (_, { id }) => {
+      const kitty = await Cat.findByIdAndRemove(id);
+      return kitty;
     }
   }
 };
