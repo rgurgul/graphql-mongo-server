@@ -19,6 +19,6 @@ export const typeDefs = gql`
   }
 
   type Subscription {
-    postAdded: Cat
+    catAdded: Cat
   }
 `;

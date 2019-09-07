@@ -1,7 +1,7 @@
 import { Cat } from "./models/Cat";
 const { PubSub } = require('apollo-server-express');
 const pubsub = new PubSub();
-const POST_ADDED = 'POST_ADDED';
+const CAT_ADDED = 'CAT_ADDED';
 
 export const resolvers = {
   Query: {
@@ -13,8 +13,8 @@ export const resolvers = {
   Mutation: {
     createCat: async (_, { name }) => {
       const kitty = new Cat({ name });
+      pubsub.publish(CAT_ADDED, { catAdded: kitty });
       await kitty.save();
-      pubsub.publish(POST_ADDED, { postAdded: args });
       return kitty;
     },
     removeCatById: async (_, { id }) => {
@@ -23,9 +23,8 @@ export const resolvers = {
     }
   },
   Subscription: {
-    postAdded: {
-      // Additional event labels can be passed to asyncIterator creation
-      subscribe: () => pubsub.asyncIterator([POST_ADDED]),
+    catAdded: {
+      subscribe: () => pubsub.asyncIterator([CAT_ADDED])
     },
   },
 };
