@@ -23,12 +23,9 @@ export const resolvers = {
     }
   },
   Subscription: {
-    postAdded: async (_, { id }) => {
-      subscribe: () => {
-        const asyncIterator = pubSub.asyncIterator([POST_ADDED]);
-        console.log('itttt');
-        return asyncIterator;
-      }
-    }
+    postAdded: {
+      // Additional event labels can be passed to asyncIterator creation
+      subscribe: () => pubsub.asyncIterator([POST_ADDED]),
+    },
   },
 };
