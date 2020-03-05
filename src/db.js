@@ -11,7 +11,7 @@ const options = {
     useUnifiedTopology: true,
     useNewUrlParser: true,
 };
-
-mongoose.connect(helpers.args.env === 'local' ? dbLocalUrl : dbUrl, options)
-    .then(() => console.log('DB connected'))
+const url = helpers.args.env === 'local' ? dbLocalUrl : dbUrl;
+mongoose.connect(url, options)
+    .then(() => console.log('DB connected on ' + url))
     .catch((err) => console.log('*** error ', err));
